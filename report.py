@@ -1,11 +1,9 @@
 # encoding=utf8
 import requests
 import json
-import time
 import datetime
 import pytz
 import re
-import sys
 import argparse
 from bs4 import BeautifulSoup
 
