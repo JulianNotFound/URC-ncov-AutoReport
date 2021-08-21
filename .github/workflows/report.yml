@@ -28,5 +28,7 @@ jobs:
       env:
         STUID: ${{ secrets.Stuid }}
         PASSWORD: ${{ secrets.Password }}
+        REPORT_DATA: ${{ secrets.Data }}
       run: |
+        echo "$REPORT_DATA" > ./data.json
         python report.py data.json "$STUID" "$PASSWORD"
