@@ -6,6 +6,8 @@ import pytz
 import re
 import argparse
 from bs4 import BeautifulSoup
+from PIL import Image
+from ocr import ocr
 
 class Report(object):
     def __init__(self, stuid, password, data_path):
@@ -77,16 +79,25 @@ class Report(object):
 
     def login(self):
         url = "https://passport.ustc.edu.cn/login?service=http%3A%2F%2Fweixine.ustc.edu.cn%2F2020%2Fcaslogin"
+        session = requests.Session()
+        r = session.get(url)
+        (cas_lt,) = re.findall(r"name=\"CAS_LT\" value=\"(.+)\"", r.text)
+        raw = session.get(
+            "https://passport.ustc.edu.cn/validatecode.jsp?type=login", stream=True
+        ).raw
+        img = Image.open(raw)
+        lt = ocr(img)
         data = {
             'model': 'uplogin.jsp',
+            "CAS_LT": cas_lt,
             'service': 'https://weixine.ustc.edu.cn/2020/caslogin',
             'username': self.stuid,
             'password': str(self.password),
             'warn': '',
             'showCode': 1,
             'button': '',
+            "LT": lt,
         }
-        session = requests.Session()
         session.post(url, data=data)
 
         print("login...")
