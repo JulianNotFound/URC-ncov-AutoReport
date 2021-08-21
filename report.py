@@ -96,7 +96,7 @@ class Report(object):
             'username': self.stuid,
             'password': str(self.password),
             'warn': '',
-            'showCode': '',
+            'showCode': 1,
             'button': '',
             "LT": lt,
         }
